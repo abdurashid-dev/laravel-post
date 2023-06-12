@@ -16,6 +16,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+        $this->getFooterContent();
     }
 
     /**
@@ -26,9 +27,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
     }
 
     /**
@@ -77,5 +78,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function register()
     {
         //
+    }
+
+    private function getFooterContent(): void
+    {
+        Nova::footer(function () {
+            return '<div class="text-center text-sm text-80">
+                <p class="mt-2 mb-1">Powered By Laravel</p>
+            </div>';
+        });
     }
 }
