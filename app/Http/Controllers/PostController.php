@@ -11,13 +11,32 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return response()->json($posts);
+        $data = [];
+        foreach ($posts as $post) {
+            $data[] = [
+                'id' => $post->id,
+                'title' => $post->title,
+                'content' => $post->content,
+                'image' => asset($post->image),
+                'created_at' => $post->created_at->format('Y-m-d H:i:s'),
+                'updated_at' => $post->updated_at->format('Y-m-d H:i:s'),
+            ];
+        }
+        return response()->json($data);
     }
 
     public function show($id)
     {
         $post = Post::findOrFail($id);
-        return response()->json($post);
+        $data = [
+            'id' => $post->id,
+            'title' => $post->title,
+            'content' => $post->content,
+            'image' => asset($post->image),
+            'created_at' => $post->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $post->updated_at->format('Y-m-d H:i:s'),
+        ];
+        return response()->json($data);
     }
 
     public function store(Request $request)
