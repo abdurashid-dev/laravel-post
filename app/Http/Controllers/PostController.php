@@ -17,7 +17,7 @@ class PostController extends Controller
                 'id' => $post->id,
                 'title' => $post->title,
                 'content' => $post->content,
-                'image' => asset('storage/'.$post->image),
+                'image' => asset('storage/' . $post->image),
                 'created_at' => $post->created_at->format('Y-m-d H:i:s'),
                 'updated_at' => $post->updated_at->format('Y-m-d H:i:s'),
             ];
@@ -81,5 +81,17 @@ class PostController extends Controller
             $post->content = $data['content'];
         $post->save();
         return response()->json($post);
+    }
+
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $imagePath = $post->image;
+        if ($imagePath) {
+            $imageName = explode('/', $imagePath)[1];
+            Storage::delete('public/posts/' . $imageName);
+        }
+        $post->delete();
+        return response()->json(['message' => 'Post deleted successfully']);
     }
 }
